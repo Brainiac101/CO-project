@@ -12,6 +12,6 @@ def decimal_to_twos_complement(decimal_num):
 
     return twos
 
-def sw(l, dict):
+def sw(l, d):
     imm=decimal_to_twos_complement(int(l[2]))
-    return imm[:7]+ dict[l[1]] + dict[l[3].rstrip(")")] + "010" + imm[7:] + "0100011"
+    return imm[:7]+ d[l[1]] + d[l[3].rstrip(")")] + "010" + imm[7:] + "0100011"
