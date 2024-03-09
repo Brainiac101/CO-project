@@ -84,27 +84,27 @@ fout = open("output.txt", "w")
 pc=0
 for line in fin:
     l=split(line)
-    if len(l)>4:
+    while len(l)!=4:
         labels[l[0]]=pc;
         l=l[1::];
     
     if l[0]=="add":
         fout.write(add(l))
-    elif l[0]=="sub":
+    elif l[0]=="sub" or l[1]=="sub":
         fout.write(sub(l))
-    elif l[0]=="sll":
+    elif l[0]=="sll" or l[1]=="sll":
         fout.write(sll(l))
-    elif l[0]=="slt":
+    elif l[0]=="slt" or l[1]=="slt":
         fout.write(slt(l))
-    elif l[0]=="sltu":
+    elif l[0]=="sltu" or l[1]=="sltu":
         fout.write(sltu(l))
-    elif l[0]=="xor":
+    elif l[0]=="xor" or l[1]=="xor":
         fout.write(xor(l))
-    elif l[0]=="srl":
+    elif l[0]=="srl" or l[1]=="srl":
         fout.write(srl(l))
-    elif l[0]=="or":
+    elif l[0]=="or" or l[1]=="or":
         fout.write(ory(l))
-    elif l[0]=="and":
+    elif l[0]=="and" or l[1]=="and":
         fout.write(andy(l))
     elif l[0]=="beq":
         fout.write(beq(l))
