@@ -13,11 +13,11 @@ def decimal_to_twos_complement(decimal_num):
     return twos
     
 
-def lw(l, dict):
-    return decimal_to_twos_complement(int(l[3])) + dict[l[2]] + "010" + dict[l[1]] + "0000011"
-def addi(l, dict):
-    return decimal_to_twos_complement(int(l[3])) + dict[l[2]] + "000" + dict[l[1]] + "0010011"
-def sltiu(l, dict):
-    return decimal_to_twos_complement(int(l[3])) + dict[l[2]] + "011" + dict[l[1]] + "0010011"
-def jalr(l, dict):
-    return decimal_to_twos_complement(int(l[3])) + dict[l[2]] + "000" + dict[l[1]] + "1100111"
+def lw(l, d):
+    return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "010" + d[l[1]] + "0000011"
+def addi(l, d):
+    return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "000" + d[l[1]] + "0010011"
+def sltiu(l, d):
+    return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "011" + d[l[1]] + "0010011"
+def jalr(l, d):
+    return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "000" + d[l[1]] + "1100111"
