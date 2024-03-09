@@ -1,4 +1,4 @@
-def decimal_to_twos_complement(decimal_num):
+def decimal_to_twos_complement_32(decimal_num):
     if decimal_num < 0:
         abs_decimal = abs(decimal_num)
         complement = 2**32 - abs_decimal
@@ -14,8 +14,8 @@ def decimal_to_twos_complement(decimal_num):
     
 
 def auipc(l, d):
-    x=decimal_to_twos_complement(int(l[2]))
+    x=decimal_to_twos_complement_32(int(l[2]))
     return x[-32:-12:] + "0010111"
 def lui(l, d):
-    x=decimal_to_twos_complement(int(l[2]))
+    x=decimal_to_twos_complement_32(int(l[2]))
     return x[-32:-12:] + "0110111" 
