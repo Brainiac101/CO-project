@@ -2,7 +2,7 @@ def split(string):
     temp="";
     l=[];
     for i in string:
-        if i == " " or i == "," or i == ":":
+        if i == " " or i == "," or i == ":"  or i=="(":
             if temp=="":
                 continue;
 
