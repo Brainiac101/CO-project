@@ -6,12 +6,9 @@ vector<string> split(string line){
     string temp="";
     vector<string> out;
     for(int i=0; i<line.size(); i++){
-        if(line[i]==' '){
+        if(line[i]==' ' || line[i]==','){
             out.push_back(temp);
             temp="";
-            continue;
-        }
-        else if(line[i]==','){
             continue;
         }
         else{
