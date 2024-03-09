@@ -1,4 +1,4 @@
-def decimal_to_twos_complement_12(decimal_num):
+def decimal_to_twos_complement_21(decimal_num):
     if decimal_num < 0:
         abs_decimal = abs(decimal_num)
         complement = 2**21 - abs_decimal
