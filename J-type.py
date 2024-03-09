@@ -14,5 +14,7 @@ def decimal_to_twos_complement(decimal_num):
     
 
 def jal(l, d):
-    x=decimal_to_twos_complement(int(l[2]))
+    if l[2] in labels:
+        x=decimal_to_twos_complement(pc-labels[l[2]])
+    else:x=decimal_to_twos_complement(int(l[2]))
     return x[0]+x[-11:-1:] + x[-12]+ x[-20:-12:]+ d[l[1]] + "1101111" 
