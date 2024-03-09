@@ -17,25 +17,25 @@ def add(l, dict):
     return "1100110 " + dict[l[1]] + " 000 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def sub(l, dict):
-    return "1100110 " + dict[l[1]] + " 000 " + dict[l[2]] + " " + dict[l[3]] + " 0100000";
+    return "1100110 " + dict[l[1]] + " 000 " + dict[l[2]] + " " + dict[l[3]] + " 0000010";
 
 def sll(l, dict):
-    return "1100110 " + dict[l[1]] + " 001 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
+    return "1100110 " + dict[l[1]] + " 100 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def slt(l, dict):
     return "1100110 " + dict[l[1]] + " 010 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def sltu(l, dict):
-    return "1100110 " + dict[l[1]] + " 011 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
+    return "1100110 " + dict[l[1]] + " 110 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def xor(l, dict):
-    return "1100110 " + dict[l[1]] + " 100 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
+    return "1100110 " + dict[l[1]] + " 001 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def srl(l, dict):
     return "1100110 " + dict[l[1]] + " 101 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def ory(l, dict):
-    return "1100110 " + dict[l[1]] + " 110 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
+    return "1100110 " + dict[l[1]] + " 011 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
 
 def andy(l, dict):
     return "1100110 " + dict[l[1]] + " 111 " + dict[l[2]] + " " + dict[l[3]] + " 0000000";
