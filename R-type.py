@@ -77,52 +77,18 @@ def bgeu(l):
     global d;
     return " imm " + d[l[2]] + d[l[1]] + "111" + "imm part 2" + "1100011";
 
-d={"zero" : "00000", "ra":"00001", "sp": "00010", "gp":"00011", "tp":"00100", "t0":"00101", "t1":"00110", "t2":"00111", "s0":"01000", "fp":"01000", "s1":"01001", "a0":"01010", "a1":"01011", "a2": "01100", "a3":"01101", "a4":"01110", "a5":"01111", "a6":"10000", "a7":"10001", "s2":"10010", "s3":"10011", "s4": "10100", "s5":"10101", "s6":"10110", "s7":"10111", "s8":"11000", "s9":"11001", "s10": "11010", "s11":"11011", "t3": "11100", "t4":"11101", "t5":"11110", "t6":"11111"};
-labels={};
-fin = open("sample.txt", "r");
-fout = open("output.txt", "w");
-pc=0;
-for line in fin:
-    l=split(line);
-    while len(l)>4:
-        labels[l[0]]=pc*4;
-    pc+=1;
-
-pc=0;
+d={"zero" : "00000", "ra":"00001", "sp": "00010", "gp":"00011", "tp":"00100", "t0":"00101", "t1":"00110", "t2":"00111", "s0":"01000", "fp":"01000", "s1":"01001", "a0":"01010", "a1":"01011", "a2": "01100", "a3":"01101", "a4":"01110", "a5":"01111", "a6":"10000", "a7":"10001", "s2":"10010", "s3":"10011", "s4": "10100", "s5":"10101", "s6":"10110", "s7":"10111", "s8":"11000", "s9":"11001", "s10": "11010", "s11":"11011", "t3": "11100", "t4":"11101", "t5":"11110", "t6":"11111"}
+labels={}
+fin = open("sample.txt", "r")
+fout = open("output.txt", "w")
+pc=0
 for line in fin:
     l=split(line)
-    while len(l)>4:
+    if len(l)!=4:
+        labels[l[0]]=pc;
         l=l[1::];
-    if l[0]=="add":
-        fout.write(add(l))
-    elif l[0]=="sub" or l[1]=="sub":
-        fout.write(sub(l))
-    elif l[0]=="sll" or l[1]=="sll":
-        fout.write(sll(l))
-    elif l[0]=="slt" or l[1]=="slt":
-        fout.write(slt(l))
-    elif l[0]=="sltu" or l[1]=="sltu":
-        fout.write(sltu(l))
-    elif l[0]=="xor" or l[1]=="xor":
-        fout.write(xor(l))
-    elif l[0]=="srl" or l[1]=="srl":
-        fout.write(srl(l))
-    elif l[0]=="or" or l[1]=="or":
-        fout.write(ory(l))
-    elif l[0]=="and" or l[1]=="and":
-        fout.write(andy(l))
-    elif l[0]=="beq":
-        fout.write(beq(l))
-    elif l[0]=="bne":
-        fout.write(bne(l))
-    elif l[0]=="bge":
-        fout.write(bge(l))
-    elif l[0]=="bgeu":
-        fout.write(bgeu(l))
-    elif l[0]=="blt":
-        fout.write(blt(l))
-    elif l[0]=="bltu":
-        fout.write(bltu(l))
+    d1={"add":add(l),"sub":sub(l),"sll":sll(l),"slt":slt(l),"sltu":sltu(l),"xor":xor(l),"srl":srl(l),"or":ory(l),"and":andy(l),"beq":beq(l),"bne":bne(l),"bge":bge(l),"bgeu":bgeu(l),"blt":blt(l),"bltu":bltu(l)}
+    fout.write(d1[l[0])
     fout.write("\n")
     pc+=1;
 
