@@ -2,10 +2,14 @@ def split(string):
     temp="";
     l=[];
     for i in string:
-        if i == " " or i == ",":
+        if i == " " or i == "," or i == ":":
+            if temp=="":
+                continue;
+
             l.append(temp);
             temp="";
             continue;
+
         else:
             temp+=i;
     if temp[-1]=="\n":
@@ -74,10 +78,16 @@ def bgeu(l):
     return " imm " + d[l[2]] + d[l[1]] + "111" + "imm part 2" + "1100011";
 
 d={"zero" : "00000", "ra":"00001", "sp": "00010", "gp":"00011", "tp":"00100", "t0":"00101", "t1":"00110", "t2":"00111", "s0":"01000", "fp":"01000", "s1":"01001", "a0":"01010", "a1":"01011", "a2": "01100", "a3":"01101", "a4":"01110", "a5":"01111", "a6":"10000", "a7":"10001", "s2":"10010", "s3":"10011", "s4": "10100", "s5":"10101", "s6":"10110", "s7":"10111", "s8":"11000", "s9":"11001", "s10": "11010", "s11":"11011", "t3": "11100", "t4":"11101", "t5":"11110", "t6":"11111"}
+labels={}
 fin = open("sample.txt", "r")
 fout = open("output.txt", "w")
+pc=0
 for line in fin:
     l=split(line)
+    if len(l)>4:
+        labels[l[0]]=pc;
+        l=l[1::];
+    
     if l[0]=="add":
         fout.write(add(l))
     elif l[0]=="sub":
@@ -109,5 +119,7 @@ for line in fin:
     elif l[0]=="bltu":
         fout.write(bltu(l))
     fout.write("\n")
+    pc+=1;
+
 fin.close()
 fout.close()
