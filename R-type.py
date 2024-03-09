@@ -94,8 +94,8 @@ for line in fin:
     if len(l)!=4:
         labels[l[0]]=pc;
         l=l[1::];
-    d1={"add":add(l),"sub":sub(l),"sll":sll(l),"slt":slt(l),"sltu":sltu(l),"xor":xor(l),"srl":srl(l),"or":ory(l),"and":andy(l),"beq":beq(l),"bne":bne(l),"bge":bge(l),"bgeu":bgeu(l),"blt":blt(l),"bltu":bltu(l)}
-    fout.write(d1[l[0])
+    d={"add":add(l),"sub":sub(l),"sll":sll(l),"slt":slt(l),"sltu":sltu(l),"xor":xor(l),"srl":srl(l),"or":ory(l),"and":andy(l),"beq":beq(l),"bne":bne(l),"bge":bge(l),"bgeu":bgeu(l),"blt":blt(l),"bltu":bltu(l)}
+    fout.write(d[l[0])
     fout.write("\n")
     pc+=1;
 
