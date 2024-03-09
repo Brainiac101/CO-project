@@ -83,6 +83,13 @@ fin = open("sample.txt", "r")
 fout = open("output.txt", "w")
 pc=0
 for line in fin:
+    l=split(line);
+    while len(l)>4:
+        labels[l[0]]=pc*4;
+    pc+=1;
+
+pc=0
+for line in fin:
     l=split(line)
     if len(l)!=4:
         labels[l[0]]=pc;
