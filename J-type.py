@@ -18,4 +18,4 @@ def jal(l,d):
         x=decimal_to_twos_complement_12(pc-labels[l[2]])
     else:x=decimal_to_twos_complement_12(int(l[2]))
     return x[0]+x[-11:-1:] + x[-12]+ x[-20:-12:]+ d[l[1]] + "1101111" 
-d1={"jal":jal(l,d)}
+
