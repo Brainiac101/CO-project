@@ -13,12 +13,10 @@ def decimal_to_twos_complement_32(decimal_num):
     return twos
     
 
-def auipc(l):
-    global d
+def auipc(l,d):
     x=decimal_to_twos_complement_32(int(l[2]))
     return x[-32:-12:] + "0010111"
-def lui(l):
-    global d
+def lui(l,d):
     x=decimal_to_twos_complement_32(int(l[2]))
     return x[-32:-12:] + "0110111" 
-d1={"auipc":auipc(l),"lui":lui(l)}
+d1={"auipc":auipc(l,d),"lui":lui(l,d)}
