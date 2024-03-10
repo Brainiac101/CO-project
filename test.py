@@ -55,7 +55,7 @@ for line in a:
         d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d)};
         str=d1[l[0]]
     elif l[0] in btype:
-        d1={"beq":b.beq(l, d), "bne":b.bne(l, d), "blt":b.blt(l, d), "bge":b.bge(l, d), "bltu":b.bltu(l, d), "bgeu":b.bgeu(l, d)}
+        d1={"beq":b.beq(l, d,labels,pc), "bne":b.bne(l, d,labels,pc), "blt":b.blt(l, d,labels,pc), "bge":b.bge(l, d,labels,pc), "bltu":b.bltu(l, d,labels,pc), "bgeu":b.bgeu(l, d,labels,pc)}
         str=d1[l[0]]
     elif l[0] in itype:
         d1={"lw":i.lw(l,d),"addi":i.addi(l,d),"sltiu":i.sltiu(l,d),"jalr":i.jalr(l,d)}
