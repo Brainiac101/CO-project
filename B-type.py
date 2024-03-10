@@ -68,7 +68,6 @@ pc=0
 for line in a:
     l=split(line)
     if len(l)!=4:
-        labels[l[0]]=pc;
         l=l[1::];
     d1={"beq":beq(l),"bne":bne(l),"blt":blt(l),"bge":bge(l),"bltu":bltu(l),"bgeu":bgeu(l)} 
     fout.write(d1[l[0]])
