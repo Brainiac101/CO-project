@@ -9,7 +9,7 @@ def split(string):
     temp="";
     l=[];
     for i in string:
-        if i == " " or i == "," or i == ":" or i=='(':
+        if i == " " or i == "," or i=='(':
             if temp=="":
                 continue;
 
@@ -41,47 +41,78 @@ fout = open("output.txt", "w")
 for line in fin:
     l=split(line);
     if len(l)>4:
-        labels[l[0]]=pc*4;
+        if(l[0][-1]==":"):
+            labels[l[0][:-1]]=pc*4;
+        else:
+            fout.write("TYPO ERROR AT LINE " + str(pc+1))
+            exit()
     if l[1] in ["lui", "jal", "auipc"] and len(l)!=3:
         labels[l[0]]=pc*4;
-    pc+=1;
-print(labels)
+    pc+=1
 
 pc=0
+halt = 0
 fin.seek(0)
 for line in fin:
+    if pc!=0:
+        fout.write("\n")
     l=split(line);
     if len(l)>4:
         l=l[1::];
     if l[1] in ["lui", "jal", "auipc"] and len(l)!=3:
         l=l[1::]
+    if l == ["beq", "zero", "zero", "0"]:
+        halt=pc
     d1={}
-    str=""
-    if l[0] in rtype:
-        d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d)};
-        str=d1[l[0]]
-    elif l[0] in btype:
-        d1={"beq":b.beq(l, d, labels, pc), "bne":b.bne(l, d, labels, pc), "blt":b.blt(l, d, labels, pc), "bge":b.bge(l, d, labels, pc), "bltu":b.bltu(l, d, labels, pc), "bgeu":b.bgeu(l, d, labels, pc)}
-        str=d1[l[0]]
-    elif l[0] in itype:
-        if l[0]=="lw":
-            str=i.lw(l, d)
+    str1=""
+    try:
+        if l[0] in rtype:
+            d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d)};
+            str1=d1[l[0]]
+        elif l[0] in btype:
+            d1={"beq":b.beq(l, d, labels, pc), "bne":b.bne(l, d, labels, pc), "blt":b.blt(l, d, labels, pc), "bge":b.bge(l, d, labels, pc), "bltu":b.bltu(l, d, labels, pc), "bgeu":b.bgeu(l, d, labels, pc)}
+            str1=d1[l[0]]
+        elif l[0] in itype:
+            if l[0]=="lw":
+                str1=i.lw(l, d)
+            else:
+                d1={"addi":i.addi(l,d),"sltiu":i.sltiu(l,d),"jalr":i.jalr(l,d)}
+                str1=d1[l[0]]
+        elif l[0] in stype:
+            d1={"sw":s.sw(l,d)}
+            str1=d1[l[0]]
+        elif l[0] in jtype:
+            d1={"jal":j.jal(l, d, labels, pc)}
+            str1=d1[l[0]]
+        elif l[0] in utype:
+            d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
+            str1=d1[l[0]]
         else:
-            d1={"addi":i.addi(l,d),"sltiu":i.sltiu(l,d),"jalr":i.jalr(l,d)}
-            str=d1[l[0]]
-    elif l[0] in stype:
-        d1={"sw":s.sw(l,d)}
-        str=d1[l[0]]
-    elif l[0] in jtype:
-        d1={"jal":j.jal(l, d, labels, pc)}
-        str=d1[l[0]]
-    elif l[0] in utype:
-        d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
-        str=d1[l[0]]
-    print(len(str))
-    fout.write(str)
-    fout.write("\n")
-    pc+=1;
+            fout.close()
+            fout=open("output.txt", "w")
+            temp="INSTRUCTION AT LINE " + str(pc+1) + " NOT IN ISA"
+            fout.write(temp)
+            fout.close()
+            fin.close()
+            exit()
+    except:
+        fout.close()
+        fout=open("output.txt", "w")
+        temp="SYNTAX ERROR AT "+str(pc+1)
+        fout.write(temp)
+        fout.close()
+        fin.close()
+        exit()
+    fout.write(str1)
+    pc+=1
+halt+=1
+if(halt!=pc):
+    fout.close()
+    fout=open("output.txt", "w")
+    fout.write("SYSTEM EXIT NOT AT END")
+    fout.close()
+    fin.close()
+    exit()
 
 fin.close()
 fout.close()
