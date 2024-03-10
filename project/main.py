@@ -60,13 +60,11 @@ halt = 0
 fin.seek(0)
 
 for line in fin:
-    print(line)
     if line=="\n":
         continue;
     if pc!=0:
         fout.write("\n")
     l=split(line);
-    print(l)
     if len(l)>4:
         l=l[1::];
     if l[1] in ["lui", "auipc"] and len(l)!=3:
@@ -87,8 +85,10 @@ for line in fin:
         elif l[0] in itype:
             if l[0]=="lw":
                 str1=i.lw(l, d)
+            elif l[0]=="jalr":
+                str1=i.jalr(l,d,labels, pc)
             else:
-                d1={"addi":i.addi(l,d),"sltiu":i.sltiu(l,d),"jalr":i.jalr(l,d)}
+                d1={"addi":i.addi(l,d),"sltiu":i.sltiu(l,d)}
                 str1=d1[l[0]]
         elif l[0] in stype:
             d1={"sw":s.sw(l,d)}
@@ -128,3 +128,4 @@ if(halt!=pc):
 
 fin.close()
 fout.close()
+
