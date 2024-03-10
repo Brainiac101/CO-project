@@ -11,21 +11,32 @@ def decimal_to_twos_complement(decimal_num):
         twos = '0' * (32 - len(twos)) + twos
 
     return twos
-def beq(l,d):
-    return decimal_to_twos_complement(int(l[3]))[19]+" "+decimal_to_twos_complement(int(l[3]))[21:27]+" " + d[l[2]] + d[l[1]] + "000" + " "+decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20]+" "+ "1100011";
+def beq(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
+    return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "000" + decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20]+ "1100011";
 
-def bne(l,d):
+def bne(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
     return  decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27]+ d[l[2]] + d[l[1]] + "001" +  decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20] + "1100011";
 
-def blt(l,d):
+def blt(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
     return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "100" +  decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20] + "1100011";
 
-def bge(l,d):
+def bge(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
     return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "101" +  decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20] + "1100011";
 
-def bltu(l,d):
+def bltu(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
     return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "110" +  decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20] + "1100011";
 
-def bgeu(l,d):
+def bgeu(l,d,labels,pc):
+    if l[3] in labels:
+        l[3]=pc*4-labels[l[3]];
     return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "111" +  decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20] + "1100011";
-
