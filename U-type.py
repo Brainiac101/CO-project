@@ -19,4 +19,3 @@ def auipc(l,d):
 def lui(l,d):
     x=decimal_to_twos_complement_32(int(l[2]))
     return x[-32:-12:] + "0110111" 
-d1={"auipc":auipc(l,d),"lui":lui(l,d)}
