@@ -18,4 +18,5 @@ def jal(l,d, labels, pc):
         x=decimal_to_twos_complement_21(pc-labels[l[2]])
     else:
         x=decimal_to_twos_complement_21(int(l[2]))
+    print(x,"<<")
     return x[0]+x[-11:-1:] + x[-12]+ x[-20:-12:]+ d[l[1]] + "1101111" 
