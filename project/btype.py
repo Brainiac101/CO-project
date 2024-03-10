@@ -15,7 +15,6 @@ def beq(l,d,labels,pc):
     if l[3] in labels:
         print(l[3])
         l[3]=pc*4-labels[l[3]];
-    print(decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "000" + decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20]+ "1100011")
     return decimal_to_twos_complement(int(l[3]))[19]+decimal_to_twos_complement(int(l[3]))[21:27] + d[l[2]] + d[l[1]] + "000" + decimal_to_twos_complement(int(l[3]))[27:31] + decimal_to_twos_complement(int(l[3]))[20]+ "1100011";
 
 def bne(l,d,labels,pc):
