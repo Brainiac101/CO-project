@@ -15,7 +15,7 @@ def decimal_to_twos_complement_32(decimal_num):
 
 def auipc(l,d):
     x=decimal_to_twos_complement_32(int(l[2]))
-    return x[-32:-12:] + "0010111"
+    return x[-32:-12:] +d[l[1]]+ "0010111"
 def lui(l,d):
     x=decimal_to_twos_complement_32(int(l[2]))
-    return x[-32:-12:] + "0110111" 
+    return x[-32:-12:] + d[l[1]]+"0110111" 
