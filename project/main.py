@@ -16,9 +16,9 @@ def split(string):
             l.append(temp);
             temp="";
             continue;
-
         else:
             temp+=i;
+    
     if temp[-1]=="\n":
         temp=temp[:-1]
     if temp[-1]==')':
@@ -38,7 +38,10 @@ pc=0
 
 fin=open("sample.txt", "r")
 fout = open("output.txt", "w")
+
 for line in fin:
+    if line=="\n":
+        continue;
     l=split(line);
     if len(l)>4:
         if(l[0][-1]==":"):
@@ -46,20 +49,29 @@ for line in fin:
         else:
             fout.write("TYPO ERROR AT LINE " + str(pc+1))
             exit()
-    if l[1] in ["lui", "jal", "auipc"] and len(l)!=3:
-        labels[l[0]]=pc*4;
+    if l[1] in ["lui", "auipc"] and len(l)!=3:
+        labels[l[0][:-1]]=pc*4;
+    if l[1]=="jal":
+        labels[l[0][:-1]]=pc*4;
     pc+=1
 
 pc=0
 halt = 0
 fin.seek(0)
+
 for line in fin:
+    print(line)
+    if line=="\n":
+        continue;
     if pc!=0:
         fout.write("\n")
     l=split(line);
+    print(l)
     if len(l)>4:
         l=l[1::];
-    if l[1] in ["lui", "jal", "auipc"] and len(l)!=3:
+    if l[1] in ["lui", "auipc"] and len(l)!=3:
+        l=l[1::]
+    if l[1]=="jal":
         l=l[1::]
     if l == ["beq", "zero", "zero", "0"]:
         halt=pc
