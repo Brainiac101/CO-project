@@ -21,4 +21,3 @@ def sltiu(l,d):
     return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "011" + d[l[1]] + "0010011"
 def jalr(l,d):
     return decimal_to_twos_complement(int(l[3])) + d[l[2]] + "000" + d[l[1]] + "1100111"
-d1={"lw":lw(l,d),"addi":addi(l,d),"sltiu":sltiu(l,d),"jalr":jalr(l,d)}
