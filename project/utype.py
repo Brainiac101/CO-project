@@ -21,4 +21,4 @@ def lui(l,d):
     if abs(int(l[2]))>=2**31:
         return "0"
     x=decimal_to_twos_complement_32(int(l[2]))
-    return x[-32:-12:] + d[l[1]] + "0110111" 
+    return x[-32:-12:] + d[l[1]] + "0110111"
