@@ -17,6 +17,10 @@ def jal(l,d, labels, pc):
     if l[2] in labels:
         x=decimal_to_twos_complement_21(labels[l[2]]-pc*4)
     else:
+        x=decimal_to_twos_complement_21(int(l[2]))
+        if int(l[2])==-2**20:
+            return x[0]+x[-11:-1:] + x[-12]+ x[-20:-12:]+ d[l[1]] + "1101111"
+
         if abs(int(l[2]))>=2**20:
             return "0"
         x=decimal_to_twos_complement_21(int(l[2]))
