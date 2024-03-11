@@ -57,7 +57,6 @@ fin.seek(0)
 for line in fin:
     if line=="\n":
         continue;
-    print(l)
     if pc!=0:
         fout.write("\n")
     l=split(line.lstrip(" ").rstrip("\n"));
