@@ -11,6 +11,7 @@ def decimal_to_twos_complement_32(decimal_num):
         twos = '0' * (32 - len(twos)) + twos
 
     return twos
+    
 
 def auipc(l,d):
     if abs(int(l[2]))>=2**31:
