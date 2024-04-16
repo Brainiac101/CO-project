@@ -55,8 +55,9 @@ for i in range(length):
         #i.check(a[i][:-1],d,pc)
         fout.write('\n')
     elif a[i][25:32] in jtype:
-        fout.write('\n')
-        #j.check(a[i][:-1],d,pc)
+        t=j.check(a[i][:-1],d,pc)
+        d=t[0]
+        pc=t[1]
     elif a[i][25:32] in stype:
         fout.write('\n')
         #s.check(a[i][:-1],d,pc)
