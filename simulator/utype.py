@@ -14,7 +14,7 @@ def auipc(s,d,pc):
     return d
 
 def lui(s,d):
-    d[s[-12:-9:]]= binary_to_decimal(s[-32:-14:]+'0'*12)
+    d[s[-12:-9:]]= binary_to_decimal(s[-32:-12:]+'0'*12)
     return d
 
 def check(s,d,pc):
