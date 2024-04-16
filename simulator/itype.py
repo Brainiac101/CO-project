@@ -61,8 +61,7 @@ def check(s,d,pc,datamem):
        return sltiu(s,d)
     elif s[17:20] == "000" and s[0:7]=="1100111":
        return jalr(s,d,pc,datamem)
-    else:
-        return pc
+    
 
 
 
