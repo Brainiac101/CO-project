@@ -61,8 +61,8 @@ for i in range(length):
         fout.write('\n')
         #s.check(a[i][:-1],d,pc)
     elif a[i][25:32] in utype:
-        fout.write('\n')
-       # u.check(a[i][:-1],d,pc)
+        d=u.check(a[i][:-1], d,pc)
+        pc=pc+4
     elif a[i][25:32] in bon:
         d=bon.check(a[i][:-1],d,pc)
     write(fout)
