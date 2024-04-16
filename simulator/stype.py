@@ -9,8 +9,11 @@ def bd(binary):
     return decimal
 
 def decimal_to_hexadecimal(decimal_num):
-    hexadecimal_num = hex(decimal_num)
-    return hexadecimal_num
+    hexnum = hex(decimal_num)
+    hexnum = hexnum[2:]
+    hexnum = hexnum.zfill(8)
+    hexnum = '0x' + hexnum
+    return hexnum
 
 def sw(s,d,datamem):
     imm=20*s[0]+s[-32:-25]+s[-12:-7]
