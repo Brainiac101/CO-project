@@ -8,6 +8,7 @@ def binary_to_decimal(binary):
     return decimal
 
 
+
 def auipc(s,d,pc):
     d[s[-12:-9:]]= pc + binary_to_decimal(s[-32:-14:]+'0'*12)
     return d
