@@ -2,10 +2,10 @@ import sys
 import rtype as r
 import btype as b
 import bonus as bon
-# import itype as i
-# import jtype as j
-# import stype as s
-# import utype as u
+import itype as i
+import jtype as j
+import stype as s
+import utype as u
 def db(decimal_num):
     if decimal_num < 0:
         abs_decimal = abs(decimal_num)
@@ -60,7 +60,7 @@ for i in range(length):
         pc=t[1]
     elif a[i][25:32] in stype:
         fout.write('\n')
-        #s.check(a[i][:-1],d,pc)
+        s.check(a[i][:-1],d,datamem)
     elif a[i][25:32] in utype:
         d=u.check(a[i][:-1], d,pc)
         pc=pc+4
