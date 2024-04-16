@@ -52,7 +52,12 @@ for i in range(length):
     elif a[i][25:32] in btype:
         pc=b.check(a[i][:-1],d,pc)
     elif a[i][25:32] in itype:
-        #i.check(a[i][:-1],d,pc)
+        if a[i][16:19]=="000":
+            t=i.check(a[i][:-1],d,pc,datamem)
+            d=t[0]
+            pc=t[1]
+        else:
+            i.check(a[i][:-1],d,pc,datamem)
         fout.write('\n')
     elif a[i][25:32] in jtype:
         t=j.check(a[i][:-1],d,pc)
