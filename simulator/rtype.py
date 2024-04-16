@@ -26,56 +26,61 @@ def bidu(binary):
     return int(binary, 2)
    
 def add(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]])+bd(d[s[8:13]]))
+    d[s[19:24]]=db(bd(d[s[12:17]])+bd(d[s[8:13]]))
     return d
 
 def sub(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]])-bd(d[s[8:13]]))
+    d[s[19:24]]=db(bd(d[s[12:17]])-bd(d[s[8:13]]))
     return d
 
 def sll(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]])**bd(d[s[8:13]]))
+    d[s[19:24]]=db(bd(d[s[12:17]])**bd(d[s[8:13]]))
     return d
 
 def slt(s, d):
     if bd(d[s[12:17]])<bd(d[s[8:13]]):
-        d[s[20:24]]=db(1)
-    return d;
+        d[s[19:24]]=db(1)
+    return d
 
 def sltu(s, d):
     if bidu(d[s[12:17]])<bidu(d[s[8:13]]):
-        d[s[20:24]]=db(1)
-    return d;
+        d[s[19:24]]=db(1)
+    return d
 
 def xor(s, d):
-    d[s[20:24]]=db(bd(s[12:17])^bd(s[8:13]))
+    d[s[19:24]]=db(bd(s[12:17])^bd(s[8:13]))
     return d
 
 def srl(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]])//bd(d[s[8:13]]))
+    d[s[19:24]]=db(bd(d[s[12:17]])//bd(d[s[8:13]]))
     return d
 
 def ory(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]]|bd(d[s[8:13]])))
+    d[s[19:24]]=db(bd(d[s[12:17]]|bd(d[s[8:13]])))
     return d
 
 def andy(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]])&bd(d[s[8:13]]))
+    d[s[19:24]]=db(bd(d[s[12:17]])&bd(d[s[8:13]]))
     return d
+
+def mul(s, d):
+    d[s[20:24]]=db(bd(d[s[12:17]]*bd[[s[8:13]]]))
 
 def check(s, d):
     if s[17:20]=="000" and s[0:7]=="0000000":
-        d=add(s,d)
-    elif s[17:20]=="000"and s[0:7]=="0100000":
-        d=sub(s,d)
-    elif s[17:20]=="001":
-        d=sll(s,d)
+        d=add(s, d)
+    elif s[17:20]=="000" and s[0:7]=="0100000":
+        d=sub(s, d)
+    elif s[17:20]=="001" and s[0:7]=="1111111":
+        d=mul(s, d)
+    elif s[17:20]=="001" and s[0:7]=="0000000":
+        d=sll(s, d)
     elif s[17:20]=="010":
-        d=slt(s,d)
+        d=slt(s, d)
     elif s[17:20]=="011":
-        d=sltu(s,d)
+        d=sltu(s, d)
     elif s[17:20]=="100":
-        d=xor(s,d)
+        d=xor(s, d)
     elif s[17:20]=="101":
         d=srl(s, d)
     elif s[17:20]=="110":
