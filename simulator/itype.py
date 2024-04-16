@@ -42,7 +42,7 @@ def addi(s,d):
     return d
 
 def sltiu(s,d):
-    if bidu(d[s[-20:-15]])<bidu(s[-32:20]):
+    if bidu(d[s[-20:-15]])<bidu(s[-32:-20]):
         d[s[19:24]]=db(1)
     return d
 
