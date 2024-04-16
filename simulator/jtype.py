@@ -10,7 +10,7 @@ def binary_to_decimal(binary):
 
 def jal(s,d,pc):
     d[s[-12:-9:]]= pc + 4
-    pc+= binary_to_decimal(s[0]+s[-20:-14:]+s[-21]+s[-31:-23:]+'0')
+    pc+= binary_to_decimal(s[0]+s[-20:-12:]+s[-21]+s[-31:-21:]+'0')
     return d,pc
 
 
