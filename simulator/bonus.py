@@ -1,6 +1,5 @@
 def rst():
-    pass
-    #jaldi banado
+    d=dict.fromkeys(d.keys(),"0"*32)
 def halt():
     pass
     #jaldi banado
