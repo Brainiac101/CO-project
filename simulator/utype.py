@@ -10,7 +10,7 @@ def binary_to_decimal(binary):
 
 
 def auipc(s,d,pc):
-    d[s[-12:-9:]]= pc + binary_to_decimal(s[-32:-14:]+'0'*12)
+    d[s[-12:-9:]]= pc + binary_to_decimal(s[-32:-12:]+'0'*12)
     return d
 
 def lui(s,d):
