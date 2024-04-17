@@ -29,7 +29,7 @@ itype=["lw","addi","sltiu","jalr"]
 jtype=["jal"]
 utype=["auipc","lui"]
 stype=["sw"]
-bon=["hlt", "rvrs", "rst"]
+bon=["halt", "rvrs", "rst"]
 labels={};
 pc=0
 input_=sys.argv[1]
@@ -40,7 +40,7 @@ for line in fin:
     if line=="\n":
         continue;
     l=split(line.lstrip(" "));
-    if l[0] in ["hlt", "rst"]:
+    if l[0] in ["halt", "rst"]:
         continue;
     if len(l)>4:
         if(l[0][-1]==":"):
@@ -55,7 +55,7 @@ for line in fin:
     pc+=1
 
 pc=0
-halt = 0
+halt_int = 0
 fin.seek(0)
 
 for line in fin:
@@ -71,7 +71,7 @@ for line in fin:
     if l[1]=="jal":
         l=l[1::]
     if l == ["beq", "zero", "zero", "0"]:
-        halt=pc
+        halt_int=pc
     d1={}
     str1=""
     try:
@@ -97,7 +97,7 @@ for line in fin:
             d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
             str1=d1[l[0]]
         elif l[0] in bon:
-            d1={"hlt":bonus.halt(l,d), "rvrs": bonus.rvrs(), "rst": bonus.rst()}
+            d1={"halt":bonus.halt_int(l,d), "rvrs": bonus.rvrs(), "rst": bonus.rst()}
             str1 = d1[l[0]]
         else:
             fout.close()
@@ -127,8 +127,8 @@ for line in fin:
         exit()
     fout.write(str1)
     pc+=1
-halt+=1
-if(halt!=pc):
+halt_int+=1
+if(halt_int!=pc):
     fout.close()
     fout=open(output_, "w")
     fout.write("SYSTEM EXIT NOT AT END")
