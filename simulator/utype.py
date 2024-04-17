@@ -28,13 +28,11 @@ def auipc(s,d,pc):
 
 def lui(s,d):
     d[s[-12:-7:]]= (s[-32:-12:]+'0'*12)
-    # print('hi')
-    # print((s[-32:-12:]+'0'*12))
     return d
 def check(s,d,pc):
     if s[-7::]=="0110111":
         return lui(s,d)
     elif s[-7::]=="0010111":
-        return auipc(s,d,pc-4)
+        return auipc(s,d,pc)
     else:
         return d
