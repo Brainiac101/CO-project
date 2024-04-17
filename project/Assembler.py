@@ -48,7 +48,7 @@ for line in fin:
         else:
             fout.write("TYPO ERROR AT LINE " + str(pc+1))
             exit()
-    if l[1] in ["lui", "auipc"] and len(l)!=3:
+    if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
         labels[l[0][:-1]]=pc*4;
     if l[1]=="jal":
         labels[l[0][:-1]]=pc*4;
@@ -66,7 +66,7 @@ for line in fin:
     l=split(line.lstrip(" ").rstrip("\n"));
     if len(l)>4:
         l=l[1::];
-    if l[1] in ["lui", "auipc"] and len(l)!=3:
+    if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
         l=l[1::]
     if l[1]=="jal":
         l=l[1::]
