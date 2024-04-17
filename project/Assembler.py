@@ -29,6 +29,7 @@ itype=["lw","addi","sltiu","jalr"]
 jtype=["jal"]
 utype=["auipc","lui"]
 stype=["sw"]
+bon=["hlt", "rvrs", "rst"]
 labels={};
 pc=0
 input_=sys.argv[1]
@@ -39,6 +40,8 @@ for line in fin:
     if line=="\n":
         continue;
     l=split(line.lstrip(" "));
+    if l[0] in ["hlt", "rst"]:
+        continue;
     if len(l)>4:
         if(l[0][-1]==":"):
             labels[l[0][:-1]]=pc*4;
@@ -93,6 +96,9 @@ for line in fin:
         elif l[0] in utype:
             d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
             str1=d1[l[0]]
+        elif l[0] in bon:
+            d1={"hlt":bonus.halt(l,d), "rvrs": bonus.rvrs(), "rst": bonus.rst()}
+            str1 = d1[l[0]]
         else:
             fout.close()
             fout=open(output_, "w")
