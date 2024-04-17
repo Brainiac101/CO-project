@@ -1,16 +1,13 @@
-def rst():
+def rst(d):
     d=dict.fromkeys(d.keys(),"0"*32)
-def halt():
-    pass
-    #jaldi banado
-    
-def reverse(rs,rd,d):
-    d[rs]=d[rd][::-1]
+    d['00010']="00000000000000000000000100000000"
+    return d
+def rvrs(rs,rd,d):
+    d[rd]=d[rs][::-1]
+    return d
 def check(s,d,pc):
-    if s[0:6]=='111111':
-        rst()
-    elif s[0:6]=='000000':
-        halt()
-    elif s[0:6]=='101010':
-        d=reverse(s[7:12],s[12:17],d)
-        return d
+    if s[0:7]=='0000001':
+        d=rst(d)
+    elif s[0:7]=='0000100':
+        d=rvrs(s[12:17],s[20:25],d)
+    return d
