@@ -9,23 +9,17 @@ def bd(binary):
     return decimal
 
 def decimal_to_hexadecimal(decimal_num):
-    hexnum = hex(decimal_num)
-    hexnum = hexnum[2:]
-    hexnum = hexnum.zfill(8)
-    hexnum = '0x' + hexnum
-    return hexnum
+    hexadecimal_num = str(hex(decimal_num))
+    hexadecimal_num='0x'+'000'+hexadecimal_num[2:]
+    return hexadecimal_num
 
 def sw(s,d,datamem):
-    imm=20*s[0]+s[-32:-25]+s[-12:-7]
-    mem=decimal_to_hexadecimal(bd(s[-20:-15])+(bd(imm)))
+    imm=s[-32:-25]+s[-12:-7]
+    mem=decimal_to_hexadecimal(bd(d[s[-20:-15]])+(bd(imm)))
     datamem[mem]=d[s[-25:-20]]
     return datamem
 
 def check(s, d,datamem):
     if s[17:20]=="010":
         datamem=sw(s, d,datamem)
-
-
-
-
-
+        return datamem
