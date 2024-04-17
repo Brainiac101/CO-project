@@ -26,45 +26,47 @@ def bidu(binary):
     return int(binary, 2)
    
 def add(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]])+bd(d[s[8:13]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])+bd(d[s[7:12]]))
+    
     return d
 
 def sub(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]])-bd(d[s[8:13]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])-bd(d[s[7:12]]))
     return d
 
 def sll(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]])**bd(d[s[8:13]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])<<bd(d[s[7:12]]))
     return d
 
 def slt(s, d):
-    if bd(d[s[12:17]])<bd(d[s[8:13]]):
-        d[s[19:24]]=db(1)
+    if bd(d[s[12:17]])<bd(d[s[7:12]]):
+        d[s[20:25]]=db(1)
     return d
 
 def sltu(s, d):
-    if bidu(d[s[12:17]])<bidu(d[s[8:13]]):
-        d[s[19:24]]=db(1)
+    if bidu(d[s[12:17]])<bidu(d[s[7:12]]):
+        d[s[20:25]]=db(1)
     return d
 
 def xor(s, d):
-    d[s[19:24]]=db(bd(s[12:17])^bd(s[8:13]))
+    d[s[20:25]]=db(bd(s[12:17])^bd(s[7:12]))
     return d
 
 def srl(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]])//bd(d[s[8:13]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])>>bd(d[s[7:12]]))
     return d
 
 def ory(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]]|bd(d[s[8:13]])))
+    d[s[20:25]]=db(bd(d[s[12:17]]|bd(d[s[7:12]])))
     return d
 
 def andy(s, d):
-    d[s[19:24]]=db(bd(d[s[12:17]])&bd(d[s[8:13]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])&bd(d[s[7:12]]))
     return d
 
 def mul(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]]*bd[[s[8:13]]]))
+    d[s[20:24]]=db(bd(d[s[12:17]]*bd[[s[7:12]]]))
+    return d
 
 def check(s, d):
     if s[17:20]=="000" and s[0:7]=="0000000":
