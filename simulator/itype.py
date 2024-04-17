@@ -49,7 +49,10 @@ def sltiu(s,d):
 def jalr(s,d,pc):
     imm=20*s[0]+s[-32:-20]
     d[s[-12:-7:]]= db(pc + 4)
-    pc=db(bd(d[s[-20:-15]])+bd(imm))
+    pc=bd(d[s[-20:-15]])+bd(imm)
+    x=db(pc)
+    x[-1]=0 
+    pc=bd(x)
     return d,pc
     
 def check(s,d,pc,datamem):
@@ -60,7 +63,7 @@ def check(s,d,pc,datamem):
     elif s[17:20] == "011":
        return sltiu(s,d)
     elif s[17:20] == "000" and s[0:7]=="1100111":
-       return jalr(s,d,pc,datamem)
+       return jalr(s,d,pc)
     
 
 
