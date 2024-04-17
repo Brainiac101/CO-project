@@ -17,6 +17,15 @@ def split(string):
             continue;
         else:
             temp+=i;
+    global fout
+    global fin
+    if temp=="":
+        fout.close()
+        fout=open(output_,"w")
+        fout.write("TYPO ERROR AT LINE "+str(pc+1))
+        fin.close()
+        fout.close()
+        exit()
     if temp[-1]==')':
         temp=temp[:-1]
     l.append(temp);
@@ -42,16 +51,17 @@ for line in fin:
     l=split(line.lstrip(" "));
     if l[0] in ["halt", "rst"]:
         continue;
-    if len(l)>4:
-        if(l[0][-1]==":"):
+    if len(l)>1:
+        if len(l)>4:
+            if(l[0][-1]==":"):
+                labels[l[0][:-1]]=pc*4;
+            else:
+                fout.write("TYPO ERROR AT LINE " + str(pc+1))
+                exit()
+        if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
             labels[l[0][:-1]]=pc*4;
-        else:
-            fout.write("TYPO ERROR AT LINE " + str(pc+1))
-            exit()
-    if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
-        labels[l[0][:-1]]=pc*4;
-    if l[1]=="jal":
-        labels[l[0][:-1]]=pc*4;
+        if l[1]=="jal":
+            labels[l[0][:-1]]=pc*4;
     pc+=1
 
 pc=0
@@ -64,12 +74,13 @@ for line in fin:
     if pc!=0:
         fout.write("\n")
     l=split(line.lstrip(" ").rstrip("\n"));
-    if len(l)>4:
-        l=l[1::];
-    if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
-        l=l[1::]
-    if l[1]=="jal":
-        l=l[1::]
+    if len(l)>1:
+        if len(l)>4:
+            l=l[1::];
+        if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
+            l=l[1::]
+        if l[1]=="jal":
+            l=l[1::]
     if l == ["beq", "zero", "zero", "0"]:
         halt_int=pc
     d1={}
@@ -97,8 +108,13 @@ for line in fin:
             d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
             str1=d1[l[0]]
         elif l[0] in bon:
-            d1={"halt":bonus.halt_int(l,d), "rvrs": bonus.rvrs(), "rst": bonus.rst()}
-            str1 = d1[l[0]]
+            if l[0]=="halt":
+                str1=bonus.halt()
+            if l[0]=="rvrs":
+                str1=bonus.rvrs(l,d)
+            if l[0]=="rst":
+                str1=bonus.rst()
+
         else:
             fout.close()
             fout=open(output_, "w")
