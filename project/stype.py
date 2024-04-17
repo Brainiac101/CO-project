@@ -1,25 +1,24 @@
-def bd(binary):
-    if binary[0] == '1':
-        inverted_binary = ''.join('1' if bit == '0' else '0' for bit in binary)
-        inverted_decimal = int(inverted_binary, 2) + 1
-        decimal = -inverted_decimal
+def decimal_to_twos_complement_12(decimal_num):
+    if decimal_num < 0:
+        abs_decimal = abs(decimal_num)
+        complement = 2**12 - abs_decimal
     else:
-        decimal = int(binary, 2)
+        complement = decimal_num
 
-    return decimal
+    twos = bin(complement)[2:]
+    
+    if len(twos) < 12:
+        twos = '0' * (12 - len(twos)) + twos
 
-def decimal_to_hexadecimal(decimal_num):
-    hexadecimal_num = str(hex(decimal_num))
-    hexadecimal_num='0x'+'000'+hexadecimal_num[2:]
-    return hexadecimal_num
+    return twos
 
-def sw(s,d,datamem):
-    imm=s[-32:-25]+s[-12:-7]
-    mem=decimal_to_hexadecimal(bd(d[s[-20:-15]])+(bd(imm)))
-    datamem[mem]=d[s[-25:-20]]
-    return datamem
+def sw(l,d):
+    imm=decimal_to_twos_complement_12(int(l[2]))
 
-def check(s, d,datamem):
-    if s[17:20]=="010":
-        datamem=sw(s, d,datamem)
-        return datamem
+    if int(l[2])==-2**11:
+        return imm[:7]+ d[l[1]] + d[l[3].rstrip(")")] + "010" + imm[7:] + "0100011"
+
+    if abs(int(l[2]))>=2**11:
+        return "0"
+    imm=decimal_to_twos_complement_12(int(l[2]))
+    return imm[:7]+ d[l[1]] + d[l[3].rstrip(")")] + "010" + imm[7:] + "0100011"
