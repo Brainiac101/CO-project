@@ -1,9 +1,9 @@
 import btype as b
 import itype as i
-import jtype as j
+import simulator.jtype as j
 import rtype as r
 import stype as s
-import utype as u
+import simulator.utype as u
 import sys
 
 def split(string):
@@ -22,7 +22,7 @@ def split(string):
     return l;
 
 d={"zero" : "00000", "ra":"00001", "sp": "00010", "gp":"00011", "tp":"00100", "t0":"00101", "t1":"00110", "t2":"00111", "s0":"01000", "fp":"01000", "s1":"01001", "a0":"01010", "a1":"01011", "a2": "01100", "a3":"01101", "a4":"01110", "a5":"01111", "a6":"10000", "a7":"10001", "s2":"10010", "s3":"10011", "s4": "10100", "s5":"10101", "s6":"10110", "s7":"10111", "s8":"11000", "s9":"11001", "s10": "11010", "s11":"11011", "t3": "11100", "t4":"11101", "t5":"11110", "t6":"11111"};
-rtype=["add", "sub", "sll", "slt", "sltu", "xor", "srl", "or", "and"]
+rtype=["add", "sub", "sll", "slt", "sltu", "xor", "srl", "or", "and", "mul"]                #added mul to the list
 btype=["beq", "bne", "blt", "bge", "bltu", "bgu"] 
 itype=["lw","addi","sltiu","jalr"]
 jtype=["jal"]
@@ -72,7 +72,7 @@ for line in fin:
     str1=""
     try:
         if l[0] in rtype:
-            d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d)};
+            d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d), "mul":r.mul(l, d)};           #added mul to the dictionary
             str1=d1[l[0]]
         elif l[0] in btype:
             d1={"beq":b.beq(l, d, labels, pc), "bne":b.bne(l, d, labels, pc), "blt":b.blt(l, d, labels, pc), "bge":b.bge(l, d, labels, pc), "bltu":b.bltu(l, d, labels, pc), "bgeu":b.bgeu(l, d, labels, pc)}
