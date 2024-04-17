@@ -1,9 +1,10 @@
 import btype as b
 import itype as i
-import simulator.jtype as j
+import jtype as j
 import rtype as r
 import stype as s
-import simulator.utype as u
+import utype as u
+import bonus
 import sys
 
 def split(string):
