@@ -19,15 +19,6 @@ def db(decimal_num):
         twos = '0' * (32 - len(twos)) + twos
 
     return twos
-
-def write(fout):
-    str1='0b'+db(pc)+' '
-    for i in d:
-        str1+=('0b'+d[i]+' ')
-    str1.rstrip()
-    str1+='\n'
-    fout.write(str1)
-
 rtype=["0110011"]
 itype=["0000011","0010011","1100111"] 
 btype=["1100011"]
@@ -42,15 +33,26 @@ fin=open(sys.argv[1])
 fout=open(sys.argv[2])
 a=fin.readlines()
 length=len(a)
-pc=0
-for i in range(length):
-    if i!=pc/4:
-        i=pc/4
+pc=4
+s=a[pc//4-1]
+while(pc//4<=len(a) and s!='00000000000000000000000001100011'):
+    s=a[pc//4-1]
+    str1='0b'+db(pc)+' '
     if a[i][25:32] in rtype:
         d=r.check(a[i][:-1], d)
         pc=pc+4
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
     elif a[i][25:32] in btype:
         pc=b.check(a[i][:-1],d,pc)
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
     elif a[i][25:32] in itype:
         if a[i][16:19]=="000":
             t=i.check(a[i][:-1],d,pc,datamem)
@@ -58,20 +60,47 @@ for i in range(length):
             pc=t[1]
         else:
             i.check(a[i][:-1],d,pc,datamem)
-        fout.write('\n')
+            pc=pc+4
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
     elif a[i][25:32] in jtype:
         t=j.check(a[i][:-1],d,pc)
         d=t[0]
         pc=t[1]
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
     elif a[i][25:32] in stype:
         fout.write('\n')
         s.check(a[i][:-1],d,datamem)
+        pc=pc+4
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
     elif a[i][25:32] in utype:
         d=u.check(a[i][:-1], d,pc)
         pc=pc+4
-    elif a[i][25:32] in bon:
-        d=bon.check(a[i][:-1],d,pc)
-    write(fout)
+        for i in d:
+            str1+=('0b'+d[i])+' '
+        str1.rstrip()
+        str1+='\n'
+        fout.write(str1)
+    # elif a[i][25:32] in bon:
+    #     d=bon.check(a[i][:-1],d,pc)
+    #     pc=pc+4
+str1=('0b'+db(pc)+' ')
+for i in d:
+    str1+=('0b'+d[i])+' '
+    str1.rstrip()
+    str1+='\n'
+fout.write(str1)
 str2=''
 for i in datamem:
     str2+=(i+': '+datamem[i]+'\n')
