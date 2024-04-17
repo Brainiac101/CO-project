@@ -11,37 +11,37 @@ def binary_to_decimal_unsigned(binary):
     return decimal_value
 def beq(s,d,pc):
     if (binary_to_decimal(d[s[7:12]]))==(binary_to_decimal(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
 def bne(s,d,pc):
     if (binary_to_decimal(d[s[7:12]]))!=(binary_to_decimal(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
 def bge(s,d,pc):
-    if (binary_to_decimal(d[s[7:12]]))>=(binary_to_decimal(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+    if (binary_to_decimal(d[s[7:12]]))<(binary_to_decimal(d[s[12:17]])):
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
 def bgeu(s,d,pc):
-    if (binary_to_decimal_unsigned(d[s[7:12]]))>=(binary_to_decimal_unsigned(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+    if (binary_to_decimal_unsigned(d[s[7:12]]))<(binary_to_decimal_unsigned(d[s[12:17]])):
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
 def blt(s,d,pc):
-    if (binary_to_decimal(d[s[7:12]]))<(binary_to_decimal(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+    if (binary_to_decimal(d[s[7:12]]))>(binary_to_decimal(d[s[12:17]])):
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
 def bltu(s,d,pc):
-    if (binary_to_decimal_unsigned(d[s[7:12]]))<(binary_to_decimal_unsigned(d[s[12:17]])):
-        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[27:31]+'0')
+    if (binary_to_decimal_unsigned(d[s[7:12]]))>(binary_to_decimal_unsigned(d[s[12:17]])):
+        pc=pc+binary_to_decimal(s[0]+s[24]+s[1:7]+s[20:24]+'0')
     else:
         pc=pc+4
     return pc
