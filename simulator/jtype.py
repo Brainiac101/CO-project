@@ -24,6 +24,9 @@ def db(decimal_num):
 def jal(s,d,pc):
     d[s[-12:-7:]]= db(pc + 4)
     pc+= binary_to_decimal(s[0]+s[-20:-12:]+s[-21]+s[-31:-21:]+'0')
+    x=db(pc)
+    x[-1]=0 
+    pc=bd(x)
     return d,pc
 
 
