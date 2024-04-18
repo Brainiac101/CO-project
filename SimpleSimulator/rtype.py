@@ -65,7 +65,7 @@ def andy(s, d):
     return d
 
 def mul(s, d):
-    d[s[20:24]]=db(bd(d[s[12:17]]*bd[[s[7:12]]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])*bd(d[s[7:12]]))
     return d
 
 def check(s, d):
