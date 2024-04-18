@@ -1,341 +1,156 @@
-import re
+import btype as b
+import itype as i
+import jtype as j
+import rtype as r
+import stype as s
+import utype as u
+import bonus
 import sys
 
-import pandas as pd
+def split(string):
+    temp="";
+    l=[];
+    for i in string:
+        if i == " " or i == "," or i=='(':
+            l.append(temp);
+            temp="";
+            continue;
+        else:
+            temp+=i;
+    global fout
+    global fin
+    if temp=="":
+        fout.close()
+        fout=open(output_,"w")
+        fout.write("TYPO ERROR AT LINE "+str(pc+1))
+        fin.close()
+        fout.close()
+        exit()
+    if temp[-1]==')':
+        temp=temp[:-1]
+    l.append(temp);
+    return l;
 
-instructions_dict = {
-    # J-type
-    "jal": ("1101111", None, None),
-    # U-type
-    "lui": ("0110111", None, None),
-    "auipc": ("0010111", None, None),
-    # B-type
-    "beq": ("1100011", "000", None),
-    "bne": ("1100011", "001", None),
-    "blt": ("1100011", "100", None),
-    "bge": ("1100011", "101", None),
-    "bltu": ("1100011", "110", None),
-    "bgeu": ("1100011", "111", None),
-    # S-type
-    "sw": ("0100011", "010", None),
-    # I-type
-    "lw": ("0000011", "010", None),
-    "addi": ("0010011", "000", None),
-    "sltiu": ("0010011", "011", None),
-    "jalr": ("1100111", "000", None),
-    # R-type
-    "add": ("0110011", "000", "0000000"),
-    "sub": ("0110011", "000", "0100000"),
-    "sll": ("0110011", "001", "0000000"),
-    "slt": ("0110011", "010", "0000000"),
-    "sltu": ("0110011", "011", "0000000"),
-    "xor": ("0110011", "100", "0000000"),
-    "srl": ("0110011", "101", "0000000"),
-    "or": ("0110011", "110", "0000000"),
-    "and": ("0110011", "111", "0000000")
-}
+d={"zero" : "00000", "ra":"00001", "sp": "00010", "gp":"00011", "tp":"00100", "t0":"00101", "t1":"00110", "t2":"00111", "s0":"01000", "fp":"01000", "s1":"01001", "a0":"01010", "a1":"01011", "a2": "01100", "a3":"01101", "a4":"01110", "a5":"01111", "a6":"10000", "a7":"10001", "s2":"10010", "s3":"10011", "s4": "10100", "s5":"10101", "s6":"10110", "s7":"10111", "s8":"11000", "s9":"11001", "s10": "11010", "s11":"11011", "t3": "11100", "t4":"11101", "t5":"11110", "t6":"11111"};
+rtype=["add", "sub", "sll", "slt", "sltu", "xor", "srl", "or", "and", "mul"]                #added mul to the list
+btype=["beq", "bne", "blt", "bge", "bltu", "bgu","bgeu"] 
+itype=["lw","addi","sltiu","jalr"]
+jtype=["jal"]
+utype=["auipc","lui"]
+stype=["sw"]
+bon=["halt", "rvrs", "rst"]
+labels={};
+pc=0
+input_=sys.argv[1]
+output_=sys.argv[2]
+fin=open(input_, "r")
+fout = open(output_, "w")
+for line in fin:
+    if line=="\n":
+        continue;
+    l=split(line.lstrip(" "));
+    if l[0] in ["halt", "rst"]:
+        continue;
+    if len(l)>1:
+        if len(l)>4:
+            if(l[0][-1]==":"):
+                labels[l[0][:-1]]=pc*4;
+            else:
+                fout.write("TYPO ERROR AT LINE " + str(pc+1))
+                exit()
+        if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
+            labels[l[0][:-1]]=pc*4;
+        if l[1]=="jal":
+            labels[l[0][:-1]]=pc*4;
+    pc+=1
 
-registers = {
-    "zero": "00000", "ra": "00001", "sp": "00010", "gp": "00011", "tp": "00100",
-    "t0": "00101", "t1": "00110", "t2": "00111", "s0": "01000", "s1": "01001",
-    "a0": "01010", "a1": "01011", "a2": "01100", "a3": "01101", "a4": "01110",
-    "a5": "01111", "a6": "10000", "a7": "10001", "s2": "10010", "s3": "10011",
-    "s4": "10100", "s5": "10101", "s6": "10110", "s7": "10111", "s8": "11000",
-    "s9": "11001", "s10": "11010", "s11": "11011", "t3": "11100", "t4": "11101",
-    "t5": "11110", "t6": "11111"
-}
+pc=0
+halt_int = 0
+fin.seek(0)
 
+for line in fin:
+    if line=="\n":
+        continue;
+    if pc!=0:
+        fout.write("\n")
+    l=split(line.lstrip(" ").rstrip("\n"));
+    if len(l)>1:
+        if len(l)>4:
+            l=l[1::];
+        if l[1] in ["lui", "auipc","rvrs"] and len(l)!=3:
+            l=l[1::]
+        if l[1]=="jal":
+            l=l[1::]
+    if l == ["beq", "zero", "zero", "0"]:
+        halt_int=pc
+    d1={}
+    str1=""
+    try:
+        if l[0] in rtype:
+            d1={"add":r.add(l, d), "sub":r.sub(l, d),"sll":r.sll(l, d),"slt":r.slt(l, d),"sltu":r.sltu(l, d),"xor":r.xor(l, d),"srl":r.srl(l, d),"or":r.ory(l, d),"and":r.andy(l, d), "mul":r.mul(l, d)};           #added mul to the dictionary
+            str1=d1[l[0]]
+        elif l[0] in btype:
+            d1={"beq":b.beq(l, d, labels, pc), "bne":b.bne(l, d, labels, pc), "blt":b.blt(l, d, labels, pc), "bge":b.bge(l, d, labels, pc), "bltu":b.bltu(l, d, labels, pc), "bgeu":b.bgeu(l, d, labels, pc)}
+            str1=d1[l[0]]
+        elif l[0] in itype:
+            if l[0]=="lw":
+                str1=i.lw(l, d)
+            else:
+                d1={"addi":i.addi(l,d),"sltiu":i.sltiu(l,d),"jalr":i.jalr(l,d,labels,pc)}
+                str1=d1[l[0]]
+        elif l[0] in stype:
+            d1={"sw":s.sw(l,d)}
+            str1=d1[l[0]]
+        elif l[0] in jtype:
+            d1={"jal":j.jal(l, d, labels, pc)}
+            str1=d1[l[0]]
+        elif l[0] in utype:
+            d1={"auipc":u.auipc(l,d),"lui":u.lui(l,d)}
+            str1=d1[l[0]]
+        elif l[0] in bon:
+            if l[0]=="halt":
+                str1=bonus.halt()
+            if l[0]=="rvrs":
+                str1=bonus.rvrs(l,d)
+            if l[0]=="rst":
+                str1=bonus.rst()
 
-class Assembler:
-    def __init__(self, filename):
-        self.instructions = []
-        with open(filename, "r") as f:
-            self.lines = f.readlines()
-            self.instructions = [line.strip() for line in self.lines if line]
-        print(self.instructions)
-        
-        self.labels=[]
-        for i in range(len(self.instructions)):
-            if(re.search('\:',self.instructions[i])):
-                split=re.split(":",self.instructions[i])
-                #check for trailing white spaces in label
-                if(split[0].strip()!=split[0]):
-                    print("Invalid label at address ", 4*i)
-                    exit()
-                self.labels.append([split[0], 4*i])
-                self.instructions[i] = split[1].strip()
-        print(self.labels)
-                
-        self.asm1 = []
-        for i in range(len(self.instructions)):
-            self.asm1.append(re.split(" ", self.instructions[i], 1))
-            
-        asmdf = pd.DataFrame(self.asm1)
-        print(asmdf)
-        
-        #search for "beq zero,zero,0" in the instructions
-        a=self.asm1.index(["beq","zero,zero,0"])
-        print("Index of virtual halt instruction: ",a)      #changed that virtual halt need not be the last instruction
-        if(a==-1):
-            print("Virtual halt instruction not found")
-            #return
+        else:
+            fout.close()
+            fout=open(output_, "w")
+            temp="INSTRUCTION AT LINE " + str(pc+1) + " NOT IN ISA"
+            fout.write(temp)
+            fout.close()
+            fin.close()
             exit()
-        
-    def assemble_instruction(self, instruction, current_address):
-        # if(instruction == None): 
-        #     return
-        if(instruction[0] not in instructions_dict):
-            print("Invalid instruction at address ", current_address)
-            #return
+        if str1=="0":
+            fout.close()
+            fout=open(output_, "w")
+            temp="MEMORY OVERFLOWN AT LINE " + str(pc+1)
+            fout.write(temp)
+            fout.close()
+            fin.close()
             exit()
-        opcode, funct3, funct7 = instructions_dict[instruction[0]]
-        arguments = [arg.strip() for arg in re.split(",|\(|\)|:", instruction[1]) if arg]
-        print(arguments)
-        if(len(instruction)!=2):
-            print("Invalid instruction at address ", current_address)
-            #return
+    except:
+        if str1=="0":
             exit()
+        fout.close()
+        fout=open(output_, "w")
+        temp="SYNTAX ERROR AT " + str(pc+1)
+        fout.write(temp)
+        fout.close()
+        fin.close()
+        exit()
+    fout.write(str1)
+    pc+=1
+halt_int+=1
+if(halt_int!=pc):
+    fout.close()
+    fout=open(output_, "w")
+    fout.write("SYSTEM EXIT NOT AT END")
+    fout.close()
+    fin.close()
+    exit()
 
-        if instruction[0] in ["lui", "auipc"]:
-            if(len(arguments)!=2):
-                print("Invalid instruction at address ", current_address)
-                #return
-                exit()
-            
-            if(arguments[0] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-                #return
-            rd = registers[arguments[0]]
-            
-            if(int(arguments[1]) >= 2**31 or int(arguments[1]) < -2**31):
-                print("Invalid immediate value")
-                exit()
-                #return
-            
-            if(int(arguments[1]) >= 0):
-                imm = '{:032b}'.format(int(arguments[1]))
-            else:
-                imm = '{:032b}'.format(2**32 + int(arguments[1]))
-            return imm[0:20] + str(rd) + str(opcode)
-        
-        if instruction[0] in ["jal"]:
-            if(len(arguments)!=2):
-                print("Invalid instruction at address ", current_address)
-                #return
-                exit()
-            
-            if(arguments[0] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            rd = registers[arguments[0]]
-            try:        #check for immediate value
-                imm = int(arguments[1])
-                if(imm >= 2**20 or imm < -2**20):
-                    print("Invalid immediate value")
-                    return
-                    exit()
-                if(imm >= 0):
-                    imm = '{:021b}'.format(imm)
-                else:
-                    imm = '{:021b}'.format(2**21 + imm)
-            except:     #else check for label
-                for i in self.labels:
-                    if(i[0] == arguments[1]):
-                        if(i[1]>=self.current_address):
-                            imm = '{:021b}'.format(int((i[1] - current_address)))
-                        else:
-                            imm = '{:021b}'.format(2**21 + int((i[1] - current_address)))
-                        break
-                else:    
-                    print("Invalid label at address ", current_address)
-            return imm[0] + imm[-11:-1] + imm[10] + imm[1:9] + str(rd) + str(opcode)
-
-        if instruction[0] in ["jalr"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[1] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rd = registers[arguments[0]]
-            rs1 = registers[arguments[1]]
-            
-            try:        #check for immediate value
-                imm = int(arguments[2])
-                if(imm >= 2**11 or imm < -2**11):
-                    print("Invalid immediate value")
-                    return
-                    exit()
-                if(imm >= 0):
-                    imm = '{:012b}'.format(imm)
-                else:
-                    imm = '{:012b}'.format(2**12 + imm)
-            except:     #else check for label
-                for i in self.labels:
-                    if(i[0] == arguments[2]):
-                        if(i[1]>=self.current_address):
-                            imm = '{:012b}'.format(int((i[1] - current_address)))
-                        else:
-                            imm = '{:012b}'.format(2**12 + int((i[1] - current_address)))
-                        break
-                else:
-                    print("Invalid label at address ", current_address)
-                    exit()
-                
-            return imm + str(rs1) + str(funct3) + str(rd) + str(opcode)
-
-        if instruction[0] in ["beq", "bne", "blt", "bge", "bltu", "bgeu"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[1] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rs1 = registers[arguments[0]]
-            rs2 = registers[arguments[1]]
-            
-            try:            #check for immediate value
-                imm = int(arguments[2])
-                if(imm >= 2**12 or imm < -2**12):
-                    print("Invalid immediate value")
-                    return
-                    exit()
-                    #return
-                if(imm >= 0):
-                    imm = '{:013b}'.format(imm)
-                else:
-                    imm = '{:013b}'.format(2**13 + imm)
-            except:        #else check for label
-                for i in self.labels:
-                    if(i[0] == arguments[2]):
-                        if(i[1]>=self.current_address):
-                            imm = '{:013b}'.format(int((i[1] - current_address)))
-                        else:
-                            imm = '{:013b}'.format(2**13 + int((i[1] - current_address)))
-                        break
-                else:
-                    print("Invalid label at address ", current_address)
-                    exit()
-                    #return
-            return imm[0] + imm[2:8] + str(rs2) + str(rs1) + str(funct3) + imm[8:12] + imm[1] + str(opcode)
-
-        if instruction[0] in ["lw"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[2] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rd = registers[arguments[0]]
-            rs1 = registers[arguments[2]]
-            
-            if(int(arguments[1]) >= 2**11 or int(arguments[1]) < -2**11):
-                print("Invalid immediate value")
-                exit()
-                #return
-            
-            if(int(arguments[1]) >= 0):
-                imm = '{:012b}'.format(int(arguments[1]))
-            else:
-                imm = '{:012b}'.format(2**12 + int(arguments[1]))
-            return imm + str(rs1) + str(funct3) + str(rd) + str(opcode)
-
-        if instruction[0] in ["sw"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[2] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rs2 = registers[arguments[0]]
-            rs1 = registers[arguments[2]]
-            if(int(arguments[1]) >= 2**11 or int(arguments[1]) < -2**11):
-                print("Invalid immediate value")
-                exit()
-                #return
-            
-            if(int(arguments[1]) >= 0):
-                imm = '{:012b}'.format(int(arguments[1]))
-            else:
-                imm = '{:012b}'.format(2**12 + int(arguments[1]))
-            return imm[0:7] + str(rs2) + str(rs1) + str(funct3) + imm[7:] + str(opcode)
-
-        if instruction[0] in ["addi", "sltiu"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[1] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rd = registers[arguments[0]]
-            rs1 = registers[arguments[1]]
-            if(int(arguments[2]) >= 2**11 or int(arguments[2]) < -2**11):
-                print("Invalid immediate value")
-                exit()
-                #return
-            if(int(arguments[2]) >= 0):
-                imm = '{:012b}'.format(int(arguments[2]))
-            else:
-                imm = '{:012b}'.format(2**12 + int(arguments[2]))
-            if funct7 is None:
-                return imm + str(rs1) + str(funct3) + str(rd) + str(opcode)
-            else:
-                return imm + str(rs1) + str(funct3) + str(rd) + str(opcode)
-
-        if instruction[0] in ["add", "sub", "sll", "slt", "sltu", "xor", "srl", "or", "and"]:
-            if(len(arguments)!=3):
-                print("Invalid instruction at address ", current_address)
-                exit()
-            
-            if(arguments[0] not in registers or arguments[1] not in registers or arguments[2] not in registers):
-                print("Invalid register at address ", current_address)
-                exit()
-            
-            rd = registers[arguments[0]]
-            rs1 = registers[arguments[1]]
-            rs2 = registers[arguments[2]]
-            return str(funct7) + str(rs2) + str(rs1) + str(funct3) + str(rd) + str(opcode)
-        
-        
-    def assemble(self):
-        self.machine_code = []
-        for i in range(len(self.instructions)):
-            self.current_address = 4 * i
-            if(self.asm1[i]!=[None]):
-                assembled_instruction = self.assemble_instruction(self.asm1[i], self.current_address)
-                if(assembled_instruction != None):
-                    self.machine_code.append(assembled_instruction)
-                else:
-                    exit()
-            
-            print(self.current_address)
-
-        print(self.machine_code)
-        
-    def write_to_file(self, filename):
-        with open(filename, "w") as f:
-            for i in range(len(self.machine_code)-1):
-                if(self.machine_code[i] != None):
-                    f.write(self.machine_code[i] + "\n")
-                else:
-                    f.write("\n")
-            f.write(self.machine_code[-1])
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("usage: assembler.py <input_filename> <output_filename>")
-        sys.exit(1)
-    assembler = Assembler(sys.argv[1])
-    assembler.assemble()
-    assembler.write_to_file(sys.argv[2])
+fin.close()
+fout.close()
