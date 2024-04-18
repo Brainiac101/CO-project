@@ -13,6 +13,6 @@ beq zero,s2,even_detected
 addi s4,zero,3
 sw s4,0(s1)
 beq zero,zero,0
-even_detected:addi s4,zero,2
+even_detected: addi s4,zero,2
 sw s4,0(s1)
 beq zero,zero,0
