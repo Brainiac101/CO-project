@@ -32,10 +32,10 @@ def add(s, d):
 
 def sub(s, d):
     d[s[20:25]]=db(bd(d[s[12:17]])-bd(d[s[7:12]]))
-    return d
+    return d 
 
 def sll(s, d):
-    d[s[20:25]]=db(bd(d[s[12:17]])<<bd(d[s[7:12]]))
+    d[s[20:25]]=(db(bd(d[s[12:17]])<<(bidu((d[s[7:12]])[27:32]))))[-32:]
     return d
 
 def slt(s, d):
@@ -53,11 +53,11 @@ def xor(s, d):
     return d
 
 def srl(s, d):
-    d[s[20:25]]=db(bd(d[s[12:17]])>>bd(d[s[7:12]]))
+    d[s[20:25]]=db(bd(d[s[12:17]])>>bidu(d[s[7:12]][27:32]))[:32]
     return d
 
 def ory(s, d):
-    d[s[20:25]]=db(bd(d[s[12:17]]|bd(d[s[7:12]])))
+    d[s[20:25]]=db(bd(d[s[12:17]])|bd(d[s[7:12]]))
     return d
 
 def andy(s, d):
